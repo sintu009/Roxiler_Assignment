@@ -86,7 +86,7 @@ const HomeLayout = ({ defaultMonth }) => {
             </select>
           </div>
         </div>
-        <AllDataContainer />
+        {/* <AllDataContainer /> */}
         {/* Column 2: Stats and Chart */}
         <div className="p-4 gap-1 flex flex-row items-center justify-between">
           <div className="w-1/5 text-center items-center justify-center shadow-xl ">
@@ -102,7 +102,7 @@ const HomeLayout = ({ defaultMonth }) => {
         {/* Column 3: All Data */}
         <div className=" p-8">
           <div>
-            {/* <AllDataContainer /> */}
+            <AllDataContainer />
           </div>
           <div className="mt-4">
             <PageButtonContainer />

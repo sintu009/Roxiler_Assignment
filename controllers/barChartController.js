@@ -2,7 +2,7 @@ import App from "../model/AppModel.js";
 
 export const getBarChart = async (req, res) => {
   try {
-    const monthNumber = parseInt(req.params.month);
+    const monthNumber = parseInt(req.params.month, 10);
 
     const priceRanges = [
       { min: 0, max: 100 },
@@ -19,9 +19,15 @@ export const getBarChart = async (req, res) => {
 
     const priceRangeCounts = [];
 
-    const items = await App.find({
-      month: monthNumber,
-    });
+    const items = await App.aggregate([
+      {
+        $match: {
+          $expr: {
+            $eq: [{ $month: '$dateOfSale' }, monthNumber],
+          },
+        },
+      },
+    ]);
 
     for (const range of priceRanges) {
       const { min, max } = range;
@@ -36,6 +42,7 @@ export const getBarChart = async (req, res) => {
 
     res.status(200).json(priceRangeCounts);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: "Internal server error" });
   }
 };

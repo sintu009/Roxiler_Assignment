@@ -4,12 +4,18 @@ export const getPieChart = async (req, res) => {
   try {
     const selectedMonthNumber = parseInt(req.params.month);
 
-    const items = await App.find({
-      month: selectedMonthNumber,
-    });
+    const items = await App.aggregate([
+      {
+        $match: {
+          $expr: {
+            $eq: [{ $month: '$dateOfSale' }, selectedMonthNumber],
+          },
+        },
+      },
+    ]);
 
     const categoryCounts = {};
-   
+
     items.forEach((item) => {
       const category = item.category;
       if (categoryCounts[category]) {

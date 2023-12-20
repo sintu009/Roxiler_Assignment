@@ -7,8 +7,9 @@ export const getStats = async (req, res) => {
     const totalSaleAmount = await App.aggregate([
       {
         $match: {
-          month: selectedMonthNumber,
-          sold: true,
+          $expr: {
+            $eq: [{ $month: '$dateOfSale' }, selectedMonthNumber],
+          },
         },
       },
       {
@@ -18,15 +19,9 @@ export const getStats = async (req, res) => {
         },
       },
     ]);
-    const totalSoldItems = await App.countDocuments({
-      month: selectedMonthNumber,
-      sold: true,
-    });
+    const totalSoldItems = totalSaleAmount.length
 
-    const totalNotSoldItems = await App.countDocuments({
-      month: selectedMonthNumber,
-      sold: false,
-    });
+    const totalNotSoldItems = totalSaleAmount.length
 
     res.status(200).json({
       totalSaleAmount: totalSaleAmount[0]?.totalAmount || 0,

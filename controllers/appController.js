@@ -16,7 +16,7 @@ export const getPopulate = async (req, res) => {
     });
 
     await App.insertMany(itemsToInsert);
-    console.log(Data)
+    // console.log(Data)
 
     res.status(200).json({ message: "Data populated successfully" });
   } catch (error) {
